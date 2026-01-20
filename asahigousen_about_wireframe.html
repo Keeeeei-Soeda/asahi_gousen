@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会社案内 - アサヒゴウセン</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif; line-height: 1.6; color: #333; }
+        .header { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); z-index: 1000; border-bottom: 1px solid #eee; }
+        .header-inner { max-width: 1400px; margin: 0 auto; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 700; color: #003d52; text-decoration: none; }
+        .nav { display: flex; gap: 40px; list-style: none; }
+        .nav a { color: #333; text-decoration: none; font-size: 15px; transition: color 0.3s; }
+        .nav a:hover { color: #0085b2; }
+        .nav a.active { color: #0085b2; font-weight: 600; }
+        .btn-primary { background: #0085b2; color: white; padding: 12px 30px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
+        .breadcrumb { margin-top: 80px; padding: 20px 40px; background: #f8f9fa; }
+        .breadcrumb-inner { max-width: 1400px; margin: 0 auto; display: flex; gap: 10px; font-size: 14px; color: #666; }
+        .breadcrumb a { color: #666; text-decoration: none; }
+        .page-header { background: linear-gradient(135deg, #003d52 0%, #0085b2 100%); color: white; padding: 80px 40px; text-align: center; }
+        .page-title { font-size: 48px; font-weight: 700; margin-bottom: 20px; }
+        .page-subtitle { font-size: 18px; opacity: 0.9; }
+        .section { padding: 100px 40px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-title { font-size: 14px; letter-spacing: 0.2em; color: #0085b2; margin-bottom: 15px; font-weight: 600; }
+        .section-heading { font-size: 36px; font-weight: 700; margin-bottom: 20px; }
+        .section-description { font-size: 16px; color: #666; line-height: 1.8; max-width: 800px; margin: 0 auto; }
+        .split-section { display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: center; margin-bottom: 100px; }
+        .split-section.reverse { direction: rtl; }
+        .split-section.reverse > * { direction: ltr; }
+        .split-image { width: 100%; height: 600px; }
+        .split-content { padding: 80px; }
+        .split-title { font-size: 36px; font-weight: 700; margin-bottom: 30px; line-height: 1.4; }
+        .split-text { font-size: 16px; line-height: 1.9; color: #666; margin-bottom: 20px; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px 60px; }
+        .info-item { display: grid; grid-template-columns: 150px 1fr; gap: 20px; padding: 20px 0; border-bottom: 1px solid #eee; }
+        .info-label { font-weight: 600; color: #333; }
+        .info-value { color: #666; }
+        .philosophy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 60px; }
+        .philosophy-card { text-align: center; padding: 40px 30px; background: #f8f9fa; border-radius: 8px; }
+        .philosophy-icon { width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+        .philosophy-title { font-size: 20px; font-weight: 700; margin-bottom: 15px; color: #003d52; }
+        .philosophy-text { font-size: 15px; color: #666; line-height: 1.8; }
+        .history-timeline { max-width: 900px; margin: 0 auto; }
+        .history-item { display: grid; grid-template-columns: 120px 1fr; gap: 40px; padding: 30px 0; border-left: 3px solid #0085b2; position: relative; margin-left: 60px; }
+        .history-item::before { content: ''; width: 20px; height: 20px; background: #0085b2; border-radius: 50%; position: absolute; left: -11.5px; top: 35px; }
+        .history-year { font-size: 20px; font-weight: 700; color: #0085b2; }
+        .history-content { color: #666; line-height: 1.8; }
+        .access-section { background: #f8f9fa; }
+        .access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+        .access-info { }
+        .access-item { margin-bottom: 30px; }
+        .access-label { font-size: 14px; color: #0085b2; font-weight: 600; margin-bottom: 10px; }
+        .access-value { font-size: 16px; color: #333; line-height: 1.8; }
+        .map-placeholder { width: 100%; height: 500px; background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #666; font-size: 24px; }
+        .cta-section { background: #003d52; color: white; padding: 80px 40px; text-align: center; }
+        .cta-title { font-size: 36px; font-weight: 700; margin-bottom: 20px; }
+        .cta-text { font-size: 16px; margin-bottom: 40px; opacity: 0.9; }
+        .btn-white { background: white; color: #003d52; padding: 15px 40px; border-radius: 4px; text-decoration: none; font-size: 16px; font-weight: 600; }
+        .footer { background: #1a1a1a; color: white; padding: 60px 40px 30px; }
+        .footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 40px; }
+        .footer-info h3 { font-size: 20px; margin-bottom: 20px; }
+        .footer-info p { font-size: 14px; line-height: 1.8; opacity: 0.8; }
+        .footer-nav h4 { font-size: 14px; margin-bottom: 15px; font-weight: 600; }
+        .footer-nav ul { list-style: none; }
+        .footer-nav li { margin-bottom: 10px; }
+        .footer-nav a { color: white; text-decoration: none; font-size: 14px; opacity: 0.7; }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; opacity: 0.6; }
+        .wireframe-note { position: fixed; bottom: 20px; right: 20px; background: #ff6b6b; color: white; padding: 15px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 9999; }
+        @media (max-width: 1024px) {
+            .split-section { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
+            .philosophy-grid { grid-template-columns: 1fr; }
+            .access-grid { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .page-title { font-size: 32px; }
+            .split-content { padding: 40px 30px; }
+            .info-item { grid-template-columns: 1fr; }
+            .history-item { grid-template-columns: 1fr; margin-left: 30px; }
+            .footer-inner { grid-template-columns: 1fr; }
+            .nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="asahigousen_top_v2.html" class="logo">アサヒゴウセン</a>
+            <nav><ul class="nav">
+                <li><a href="asahigousen_service_wireframe.html">事業内容</a></li>
+                <li><a href="asahigousen_about_wireframe.html" class="active">会社案内</a></li>
+                <li><a href="asahigousen_member_wireframe.html">従業員紹介</a></li>
+                <li><a href="asahigousen_info_wireframe.html">お知らせ</a></li>
+            </ul></nav>
+            <div><a href="asahigousen_contact_wireframe.html" class="btn-primary">お問い合わせ</a></div>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <div class="breadcrumb-inner">
+            <a href="asahigousen_top_v2.html">ホーム</a><span>›</span><span>会社案内</span>
+        </div>
+    </div>
+
+    <section class="page-header">
+        <h1 class="page-title">会社案内</h1>
+        <p class="page-subtitle">ABOUT US</p>
+    </section>
+
+    <!-- 代表メッセージ -->
+    <section class="section">
+        <div class="split-section">
+            <div class="split-image" style="background: url('https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&fit=crop') center/cover;"></div>
+            <div class="split-content">
+                <div class="section-title">MESSAGE</div>
+                <h2 class="split-title">感謝と謙虚を忘れず、<br>誠実に製品を作り続ける</h2>
+                <p class="split-text">
+                    社会の様々な分野で更なる高付加価値を求められています。
+                    蓄積された知識とノウハウをベースに、たゆまぬ技術研鑽と創造力で企画開発を行い、お客様が要望する製品イメージを実現しています。
+                </p>
+                <p class="split-text">
+                    そんな私たちは、いわば"縁の下の力持ち"。
+                    お客様からの期待と信頼に応え、多くのブランドを支えています。
+                </p>
+                <p class="split-text">
+                    糸と丸編ニットと言えば、一番最初に顔が思い浮かぶ会社でありたい。
+                </p>
+                <div style="margin-top: 40px; font-size: 18px; font-weight: 600; color: #003d52;">
+                    代表取締役社長　田中 寛史
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 会社概要 -->
+    <section class="section" style="background: #f8f9fa;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">COMPANY PROFILE</h2>
+                <h3 class="section-heading">会社概要</h3>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">社名</div>
+                    <div class="info-value">株式会社アサヒゴウセン</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">代表者</div>
+                    <div class="info-value">代表取締役社長 田中 寛史</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">設立</div>
+                    <div class="info-value">1964年8月</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">資本金</div>
+                    <div class="info-value">3,500万円</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">従業員数</div>
+                    <div class="info-value">45名</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">売上高</div>
+                    <div class="info-value">10億8000万円（グループ全体、2021年3月期）</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">所在地</div>
+                    <div class="info-value">〒923-1101 石川県能美市粟生町ツ−20</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">電話</div>
+                    <div class="info-value">TEL: 0761-57-1341 / FAX: 0761-58-6170</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">事業内容</div>
+                    <div class="info-value">かさ高加工糸製造、丸編ニット製造</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">取引銀行</div>
+                    <div class="info-value">北國銀行 能美支店</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 企業理念 -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">PHILOSOPHY</h2>
+                <h3 class="section-heading">企業理念</h3>
+                <p class="section-description">
+                    夢・希望・明日へ
+                </p>
+            </div>
+
+            <div class="philosophy-grid">
+                <div class="philosophy-card">
+                    <div class="philosophy-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🎯</div>
+                    <h4 class="philosophy-title">使命</h4>
+                    <p class="philosophy-text">
+                        高付加価値・高品質<br>
+                        他社に出来ない<br>
+                        製品提供
+                    </p>
+                </div>
+                <div class="philosophy-card">
+                    <div class="philosophy-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">💡</div>
+                    <h4 class="philosophy-title">経営理念</h4>
+                    <p class="philosophy-text">
+                        全従業員の<br>
+                        物心両面の幸福追求<br>
+                        社会進歩発展への貢献
+                    </p>
+                </div>
+                <div class="philosophy-card">
+                    <div class="philosophy-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">🤝</div>
+                    <h4 class="philosophy-title">行動指針</h4>
+                    <p class="philosophy-text">
+                        日々創意工夫<br>
+                        感謝と謙虚を忘れず<br>
+                        誠実に製品を作る
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 会社沿革 -->
+    <section class="section" style="background: #f8f9fa;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">HISTORY</h2>
+                <h3 class="section-heading">会社沿革</h3>
+            </div>
+
+            <div class="history-timeline">
+                <div class="history-item">
+                    <div class="history-year">1964年</div>
+                    <div class="history-content">旭化成株式会社との協業により、石川県能美市に設立</div>
+                </div>
+                <div class="history-item">
+                    <div class="history-year">1970年代</div>
+                    <div class="history-content">仮撚加工技術の向上により、衣料用途への展開を開始</div>
+                </div>
+                <div class="history-item">
+                    <div class="history-year">1980年代</div>
+                    <div class="history-content">丸編ニット事業を本格化、産業資材分野への進出</div>
+                </div>
+                <div class="history-item">
+                    <div class="history-year">1990年代</div>
+                    <div class="history-content">自動車部品向け素材の開発、医療・介護分野への展開</div>
+                </div>
+                <div class="history-item">
+                    <div class="history-year">2000年代</div>
+                    <div class="history-content">高機能素材の研究開発強化、品質管理体制の構築</div>
+                </div>
+                <div class="history-item">
+                    <div class="history-year">2010年代</div>
+                    <div class="history-content">環境対応型製造プロセスの導入、省エネ設備への投資</div>
+                </div>
+                <div class="history-item">
+                    <div class="history-year">2020年〜</div>
+                    <div class="history-content">デジタル化推進、次世代素材の開発に注力</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- アクセス -->
+    <section class="section access-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">ACCESS</h2>
+                <h3 class="section-heading">アクセス</h3>
+            </div>
+
+            <div class="access-grid">
+                <div class="access-info">
+                    <div class="access-item">
+                        <div class="access-label">住所</div>
+                        <div class="access-value">
+                            〒923-1101<br>
+                            石川県能美市粟生町ツ−20
+                        </div>
+                    </div>
+                    <div class="access-item">
+                        <div class="access-label">電話</div>
+                        <div class="access-value">
+                            TEL: 0761-57-1341<br>
+                            FAX: 0761-58-6170
+                        </div>
+                    </div>
+                    <div class="access-item">
+                        <div class="access-label">アクセス</div>
+                        <div class="access-value">
+                            JR北陸本線「能美根上駅」より車で約10分<br>
+                            北陸自動車道「小松IC」より車で約15分
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 100%; height: 500px; border-radius: 8px; overflow: hidden;">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3201.234567890123!2d136.4567890123456!3d36.45678901234567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDI3JzI0LjQiTiAxMzbCsDI3JzI0LjQiRQ!5e0!3m2!1sja!2sjp!4v1234567890123!5m2!1sja!2sjp" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">お気軽にお問い合わせください</h2>
+            <p class="cta-text">糸・生地のご相談から、採用情報まで承ります</p>
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <a href="tel:0761-57-1341" class="btn-white">📞 0761-57-1341</a>
+                <a href="asahigousen_contact_wireframe.html" class="btn-white">✉ お問い合わせフォーム</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-info">
+                <h3>株式会社アサヒゴウセン</h3>
+                <p>〒923-1101<br>石川県能美市粟生町ツ−20<br>TEL: 0761-57-1341<br>FAX: 0761-58-6170</p>
+            </div>
+            <div class="footer-nav"><h4>事業内容</h4><ul><li><a href="asahigousen_service_wireframe.html">糸加工</a></li><li><a href="asahigousen_service_wireframe.html">ニット製造</a></li><li><a href="asahigousen_service_wireframe.html">展開分野</a></li></ul></div>
+            <div class="footer-nav"><h4>会社情報</h4><ul><li><a href="asahigousen_about_wireframe.html">会社案内</a></li><li><a href="asahigousen_member_wireframe.html">従業員紹介</a></li><li><a href="asahigousen_member_wireframe.html">採用情報</a></li></ul></div>
+            <div class="footer-nav"><h4>その他</h4><ul><li><a href="asahigousen_info_wireframe.html">お知らせ</a></li><li><a href="asahigousen_contact_wireframe.html">お問い合わせ</a></li><li><a href="#">プライバシーポリシー</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">Copyright © 2025 ASAHIGOUSEN All Rights Reserved.</div>
+    </footer>
+
+    <div class="wireframe-note">📐 ワイヤーフレーム</div>
+</body>
+</html>
