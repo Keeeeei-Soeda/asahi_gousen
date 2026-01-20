@@ -1,245 +1,577 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>お知らせ一覧 - アサヒゴウセン</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif; line-height: 1.6; color: #333; }
-        .header { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); z-index: 1000; border-bottom: 1px solid #eee; }
-        .header-inner { max-width: 1400px; margin: 0 auto; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 24px; font-weight: 700; color: #003d52; text-decoration: none; }
-        .nav { display: flex; gap: 40px; list-style: none; }
-        .nav a { color: #333; text-decoration: none; font-size: 15px; transition: color 0.3s; }
-        .nav a:hover { color: #0085b2; }
-        .nav a.active { color: #0085b2; font-weight: 600; }
-        .btn-primary { background: #0085b2; color: white; padding: 12px 30px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
-        .breadcrumb { margin-top: 80px; padding: 20px 40px; background: #f8f9fa; }
-        .breadcrumb-inner { max-width: 1400px; margin: 0 auto; display: flex; gap: 10px; font-size: 14px; color: #666; }
-        .breadcrumb a { color: #666; text-decoration: none; }
-        .page-header { background: linear-gradient(135deg, #003d52 0%, #0085b2 100%); color: white; padding: 80px 40px; text-align: center; }
-        .page-title { font-size: 48px; font-weight: 700; margin-bottom: 20px; }
-        .page-subtitle { font-size: 18px; opacity: 0.9; }
-        .section { padding: 100px 40px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        
-        /* カテゴリータブ */
-        .category-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap; }
-        .category-tab { padding: 12px 30px; background: #f8f9fa; border: 2px solid #e0e0e0; border-radius: 50px; font-size: 15px; font-weight: 600; color: #666; cursor: pointer; transition: all 0.3s; text-decoration: none; }
-        .category-tab:hover { background: #e0e0e0; }
-        .category-tab.active { background: #0085b2; color: white; border-color: #0085b2; }
-        
-        /* お知らせリスト */
-        .news-list { display: grid; gap: 30px; }
-        .news-item { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
-        .news-item:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.1); transform: translateY(-5px); }
-        .news-header { display: flex; gap: 20px; align-items: center; margin-bottom: 15px; flex-wrap: wrap; }
-        .news-date { font-size: 16px; font-weight: 600; color: #0085b2; }
-        .news-category { display: inline-block; padding: 6px 16px; background: #f8f9fa; border-radius: 20px; font-size: 13px; font-weight: 600; color: #666; }
-        .news-category.company { background: #e3f2fd; color: #1976d2; }
-        .news-category.product { background: #f3e5f5; color: #7b1fa2; }
-        .news-category.recruit { background: #e8f5e9; color: #388e3c; }
-        .news-category.other { background: #fff3e0; color: #f57c00; }
-        .news-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; line-height: 1.5; }
-        .news-excerpt { font-size: 15px; color: #666; line-height: 1.8; }
-        .news-arrow { font-size: 20px; color: #0085b2; margin-left: auto; }
-        
-        /* ページネーション */
-        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 60px; }
-        .page-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid #e0e0e0; border-radius: 4px; background: white; color: #666; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; }
-        .page-btn:hover { background: #f8f9fa; }
-        .page-btn.active { background: #0085b2; color: white; border-color: #0085b2; }
-        .page-btn.disabled { opacity: 0.3; cursor: not-allowed; }
-        
-        .cta-section { background: #003d52; color: white; padding: 80px 40px; text-align: center; }
-        .cta-title { font-size: 36px; font-weight: 700; margin-bottom: 20px; }
-        .cta-text { font-size: 16px; margin-bottom: 40px; opacity: 0.9; }
-        .btn-white { background: white; color: #003d52; padding: 15px 40px; border-radius: 4px; text-decoration: none; font-size: 16px; font-weight: 600; }
-        .footer { background: #1a1a1a; color: white; padding: 60px 40px 30px; }
-        .footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 40px; }
-        .footer-info h3 { font-size: 20px; margin-bottom: 20px; }
-        .footer-info p { font-size: 14px; line-height: 1.8; opacity: 0.8; }
-        .footer-nav h4 { font-size: 14px; margin-bottom: 15px; font-weight: 600; }
-        .footer-nav ul { list-style: none; }
-        .footer-nav li { margin-bottom: 10px; }
-        .footer-nav a { color: white; text-decoration: none; font-size: 14px; opacity: 0.7; }
-        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; opacity: 0.6; }
-        .wireframe-note { position: fixed; bottom: 20px; right: 20px; background: #ff6b6b; color: white; padding: 15px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 9999; }
-        @media (max-width: 768px) {
-            .page-title { font-size: 32px; }
-            .news-header { flex-direction: column; align-items: flex-start; }
-            .footer-inner { grid-template-columns: 1fr; }
-            .nav { display: none; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+          "Noto Sans JP", sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        z-index: 1000;
+        border-bottom: 1px solid #eee;
+      }
+      .header-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        color: #003d52;
+        text-decoration: none;
+      }
+      .nav {
+        display: flex;
+        gap: 40px;
+        list-style: none;
+      }
+      .nav a {
+        color: #333;
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.3s;
+      }
+      .nav a:hover {
+        color: #0085b2;
+      }
+      .nav a.active {
+        color: #0085b2;
+        font-weight: 600;
+      }
+      .btn-primary {
+        background: #0085b2;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .breadcrumb {
+        margin-top: 80px;
+        padding: 20px 40px;
+        background: #f8f9fa;
+      }
+      .breadcrumb-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        gap: 10px;
+        font-size: 14px;
+        color: #666;
+      }
+      .breadcrumb a {
+        color: #666;
+        text-decoration: none;
+      }
+      .page-header {
+        background: linear-gradient(135deg, #003d52 0%, #0085b2 100%);
+        color: white;
+        padding: 80px 40px;
+        text-align: center;
+      }
+      .page-title {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      .page-subtitle {
+        font-size: 18px;
+        opacity: 0.9;
+      }
+      .section {
+        padding: 100px 40px;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* カテゴリータブ */
+      .category-tabs {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 60px;
+        flex-wrap: wrap;
+      }
+      .category-tab {
+        padding: 12px 30px;
+        background: #f8f9fa;
+        border: 2px solid #e0e0e0;
+        border-radius: 50px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+      .category-tab:hover {
+        background: #e0e0e0;
+      }
+      .category-tab.active {
+        background: #0085b2;
+        color: white;
+        border-color: #0085b2;
+      }
+
+      /* お知らせリスト */
+      .news-list {
+        display: grid;
+        gap: 30px;
+      }
+      .news-item {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 30px;
+        transition: all 0.3s;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+      .news-item:hover {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        transform: translateY(-5px);
+      }
+      .news-header {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+      .news-date {
+        font-size: 16px;
+        font-weight: 600;
+        color: #0085b2;
+      }
+      .news-category {
+        display: inline-block;
+        padding: 6px 16px;
+        background: #f8f9fa;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #666;
+      }
+      .news-category.company {
+        background: #e3f2fd;
+        color: #1976d2;
+      }
+      .news-category.product {
+        background: #f3e5f5;
+        color: #7b1fa2;
+      }
+      .news-category.recruit {
+        background: #e8f5e9;
+        color: #388e3c;
+      }
+      .news-category.other {
+        background: #fff3e0;
+        color: #f57c00;
+      }
+      .news-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        line-height: 1.5;
+      }
+      .news-excerpt {
+        font-size: 15px;
+        color: #666;
+        line-height: 1.8;
+      }
+      .news-arrow {
+        font-size: 20px;
+        color: #0085b2;
+        margin-left: auto;
+      }
+
+      /* ページネーション */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 60px;
+      }
+      .page-btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        background: white;
+        color: #666;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+      .page-btn:hover {
+        background: #f8f9fa;
+      }
+      .page-btn.active {
+        background: #0085b2;
+        color: white;
+        border-color: #0085b2;
+      }
+      .page-btn.disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+
+      .cta-section {
+        background: #003d52;
+        color: white;
+        padding: 80px 40px;
+        text-align: center;
+      }
+      .cta-title {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      .cta-text {
+        font-size: 16px;
+        margin-bottom: 40px;
+        opacity: 0.9;
+      }
+      .btn-white {
+        background: white;
+        color: #003d52;
+        padding: 15px 40px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .footer {
+        background: #1a1a1a;
+        color: white;
+        padding: 60px 40px 30px;
+      }
+      .footer-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 60px;
+        margin-bottom: 40px;
+      }
+      .footer-info h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+      .footer-info p {
+        font-size: 14px;
+        line-height: 1.8;
+        opacity: 0.8;
+      }
+      .footer-nav h4 {
+        font-size: 14px;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+      .footer-nav ul {
+        list-style: none;
+      }
+      .footer-nav li {
+        margin-bottom: 10px;
+      }
+      .footer-nav a {
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        opacity: 0.7;
+      }
+      .footer-bottom {
+        text-align: center;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 13px;
+        opacity: 0.6;
+      }
+      .wireframe-note {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #ff6b6b;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+      }
+      @media (max-width: 768px) {
+        .page-title {
+          font-size: 32px;
         }
+        .news-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .footer-inner {
+          grid-template-columns: 1fr;
+        }
+        .nav {
+          display: none;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header class="header">
-        <div class="header-inner">
-            <a href="asahigousen_top_v2.html" class="logo">アサヒゴウセン</a>
-            <nav><ul class="nav">
-                <li><a href="asahigousen_service_wireframe.html">事業内容</a></li>
-                <li><a href="asahigousen_about_wireframe.html">会社案内</a></li>
-                <li><a href="asahigousen_member_wireframe.html">従業員紹介</a></li>
-                <li><a href="asahigousen_info_wireframe.html" class="active">お知らせ</a></li>
-            </ul></nav>
-            <div><a href="asahigousen_contact_wireframe.html" class="btn-primary">お問い合わせ</a></div>
+      <div class="header-inner">
+        <a href="index.html" class="logo">アサヒゴウセン</a>
+        <nav>
+          <ul class="nav">
+            <li><a href="asahigousen_service_wireframe.html">事業内容</a></li>
+            <li><a href="asahigousen_about_wireframe.html">会社案内</a></li>
+            <li><a href="asahigousen_member_wireframe.html">従業員紹介</a></li>
+            <li>
+              <a href="asahigousen_info_wireframe.html" class="active"
+                >お知らせ</a
+              >
+            </li>
+          </ul>
+        </nav>
+        <div>
+          <a href="asahigousen_contact_wireframe.html" class="btn-primary"
+            >お問い合わせ</a
+          >
         </div>
+      </div>
     </header>
 
     <div class="breadcrumb">
-        <div class="breadcrumb-inner">
-            <a href="asahigousen_top_v2.html">ホーム</a><span>›</span><span>お知らせ</span>
-        </div>
+      <div class="breadcrumb-inner">
+        <a href="index.html">ホーム</a><span>›</span><span>お知らせ</span>
+      </div>
     </div>
 
     <section class="page-header">
-        <h1 class="page-title">お知らせ</h1>
-        <p class="page-subtitle">NEWS</p>
+      <h1 class="page-title">お知らせ</h1>
+      <p class="page-subtitle">NEWS</p>
     </section>
 
     <section class="section">
-        <div class="container">
-            <!-- カテゴリータブ -->
-            <div class="category-tabs">
-                <a href="#" class="category-tab active">すべて</a>
-                <a href="#" class="category-tab">会社情報</a>
-                <a href="#" class="category-tab">製品情報</a>
-                <a href="#" class="category-tab">採用情報</a>
-                <a href="#" class="category-tab">その他</a>
-            </div>
-
-            <!-- お知らせリスト -->
-            <div class="news-list">
-                <a href="/info/detail-1" class="news-item">
-                    <div class="news-header">
-                        <span class="news-date">2025.01.20</span>
-                        <span class="news-category company">会社情報</span>
-                    </div>
-                    <h3 class="news-title">アサヒゴウセンの省エネに対する取組(2025年度)</h3>
-                    <p class="news-excerpt">2025年度の省エネルギー対策について、具体的な取り組み内容を公開しました。持続可能な製造プロセスの実現に向けた当社の取り組みをご紹介します。</p>
-                </a>
-
-                <a href="/info/detail-2" class="news-item">
-                    <div class="news-header">
-                        <span class="news-date">2024.12.15</span>
-                        <span class="news-category product">製品情報</span>
-                    </div>
-                    <h3 class="news-title">新素材「エコフィット」シリーズを発表</h3>
-                    <p class="news-excerpt">環境に配慮した新素材「エコフィット」シリーズの開発に成功しました。従来比30%の省エネルギー製造を実現し、リサイクル性も向上しています。</p>
-                </a>
-
-                <a href="/info/detail-3" class="news-item">
-                    <div class="news-header">
-                        <span class="news-date">2024.11.05</span>
-                        <span class="news-category company">会社情報</span>
-                    </div>
-                    <h3 class="news-title">アサヒゴウセンの省エネに対する取組</h3>
-                    <p class="news-excerpt">環境への配慮と持続可能な製造プロセスの実現に向けた取り組みを紹介します。LED照明の全面導入、高効率空調設備の設置など、様々な施策を実施しています。</p>
-                </a>
-
-                <a href="/info/detail-4" class="news-item">
-                    <div class="news-header">
-                        <span class="news-date">2024.10.10</span>
-                        <span class="news-category recruit">採用情報</span>
-                    </div>
-                    <h3 class="news-title">2025年度新卒採用を開始しました</h3>
-                    <p class="news-excerpt">2025年4月入社の新卒採用を開始しました。生産技術、品質管理、営業、開発の各部門で募集しています。会社説明会の日程も公開中です。</p>
-                </a>
-
-                <a href="/info/detail-5" class="news-item">
-                    <div class="news-header">
-                        <span class="news-date">2024.09.01</span>
-                        <span class="news-category company">会社情報</span>
-                    </div>
-                    <h3 class="news-title">石川県優良企業表彰を受賞</h3>
-                    <p class="news-excerpt">石川県より優良企業として表彰されました。長年にわたる地域経済への貢献、雇用創出、環境保全活動が評価されました。</p>
-                </a>
-
-                <a href="/info/detail-6" class="news-item">
-                    <div class="news-header">
-                        <span class="news-date">2024.08.15</span>
-                        <span class="news-category other">その他</span>
-                    </div>
-                    <h3 class="news-title">夏季休業のお知らせ</h3>
-                    <p class="news-excerpt">誠に勝手ながら、8月13日(火)から8月16日(金)まで夏季休業とさせていただきます。休業期間中のお問い合わせは8月19日(月)より順次対応させていただきます。</p>
-                </a>
-
-                <a href="/info/detail-7" class="news-item">
-                    <div class="news-header">
-                        <span class="news-date">2024.07.20</span>
-                        <span class="news-category product">製品情報</span>
-                    </div>
-                    <h3 class="news-title">自動車用シート素材の新規受注について</h3>
-                    <p class="news-excerpt">大手自動車メーカーより、次世代電気自動車向けシート素材の受注が決定しました。軽量化と快適性を両立した新素材の採用となります。</p>
-                </a>
-
-                <a href="/info/detail-8" class="news-item">
-                    <div class="news-header">
-                        <span class="news-date">2024.06.10</span>
-                        <span class="news-category company">会社情報</span>
-                    </div>
-                    <h3 class="news-title">工場見学の受け入れを再開しました</h3>
-                    <p class="news-excerpt">新型コロナウイルス感染症の影響により中止していた工場見学の受け入れを再開しました。学生・企業の皆様からのお申し込みをお待ちしております。</p>
-                </a>
-
-                <a href="/info/detail-9" class="news-item">
-                    <div class="news-header">
-                        <span class="news-date">2024.05.01</span>
-                        <span class="news-category other">その他</span>
-                    </div>
-                    <h3 class="news-title">ゴールデンウィーク休業のお知らせ</h3>
-                    <p class="news-excerpt">5月3日(金)から5月6日(月)までゴールデンウィーク休業とさせていただきます。5月7日(火)より通常営業いたします。</p>
-                </a>
-
-                <a href="/info/detail-10" class="news-item">
-                    <div class="news-header">
-                        <span class="news-date">2021.07.09</span>
-                        <span class="news-category company">会社情報</span>
-                    </div>
-                    <h3 class="news-title">動画撮影</h3>
-                    <p class="news-excerpt">当社の製造現場や技術力を紹介する動画コンテンツを制作しました。最新鋭の設備と熟練の技術をご覧いただけます。</p>
-                </a>
-            </div>
-
-            <!-- ページネーション -->
-            <div class="pagination">
-                <a href="#" class="page-btn disabled">‹</a>
-                <a href="#" class="page-btn active">1</a>
-                <a href="#" class="page-btn">2</a>
-                <a href="#" class="page-btn">3</a>
-                <a href="#" class="page-btn">4</a>
-                <a href="#" class="page-btn">5</a>
-                <a href="#" class="page-btn">›</a>
-            </div>
+      <div class="container">
+        <!-- カテゴリータブ -->
+        <div class="category-tabs">
+          <a href="#" class="category-tab active">すべて</a>
+          <a href="#" class="category-tab">会社情報</a>
+          <a href="#" class="category-tab">製品情報</a>
+          <a href="#" class="category-tab">採用情報</a>
+          <a href="#" class="category-tab">その他</a>
         </div>
+
+        <!-- お知らせリスト -->
+        <div class="news-list">
+          <a href="/info/detail-1" class="news-item">
+            <div class="news-header">
+              <span class="news-date">2025.01.20</span>
+              <span class="news-category company">会社情報</span>
+            </div>
+            <h3 class="news-title">
+              アサヒゴウセンの省エネに対する取組(2025年度)
+            </h3>
+            <p class="news-excerpt">
+              2025年度の省エネルギー対策について、具体的な取り組み内容を公開しました。持続可能な製造プロセスの実現に向けた当社の取り組みをご紹介します。
+            </p>
+          </a>
+
+          <a href="/info/detail-2" class="news-item">
+            <div class="news-header">
+              <span class="news-date">2024.12.15</span>
+              <span class="news-category product">製品情報</span>
+            </div>
+            <h3 class="news-title">新素材「エコフィット」シリーズを発表</h3>
+            <p class="news-excerpt">
+              環境に配慮した新素材「エコフィット」シリーズの開発に成功しました。従来比30%の省エネルギー製造を実現し、リサイクル性も向上しています。
+            </p>
+          </a>
+
+          <a href="/info/detail-3" class="news-item">
+            <div class="news-header">
+              <span class="news-date">2024.11.05</span>
+              <span class="news-category company">会社情報</span>
+            </div>
+            <h3 class="news-title">アサヒゴウセンの省エネに対する取組</h3>
+            <p class="news-excerpt">
+              環境への配慮と持続可能な製造プロセスの実現に向けた取り組みを紹介します。LED照明の全面導入、高効率空調設備の設置など、様々な施策を実施しています。
+            </p>
+          </a>
+
+          <a href="/info/detail-4" class="news-item">
+            <div class="news-header">
+              <span class="news-date">2024.10.10</span>
+              <span class="news-category recruit">採用情報</span>
+            </div>
+            <h3 class="news-title">2025年度新卒採用を開始しました</h3>
+            <p class="news-excerpt">
+              2025年4月入社の新卒採用を開始しました。生産技術、品質管理、営業、開発の各部門で募集しています。会社説明会の日程も公開中です。
+            </p>
+          </a>
+
+          <a href="/info/detail-5" class="news-item">
+            <div class="news-header">
+              <span class="news-date">2024.09.01</span>
+              <span class="news-category company">会社情報</span>
+            </div>
+            <h3 class="news-title">石川県優良企業表彰を受賞</h3>
+            <p class="news-excerpt">
+              石川県より優良企業として表彰されました。長年にわたる地域経済への貢献、雇用創出、環境保全活動が評価されました。
+            </p>
+          </a>
+
+          <a href="/info/detail-6" class="news-item">
+            <div class="news-header">
+              <span class="news-date">2024.08.15</span>
+              <span class="news-category other">その他</span>
+            </div>
+            <h3 class="news-title">夏季休業のお知らせ</h3>
+            <p class="news-excerpt">
+              誠に勝手ながら、8月13日(火)から8月16日(金)まで夏季休業とさせていただきます。休業期間中のお問い合わせは8月19日(月)より順次対応させていただきます。
+            </p>
+          </a>
+
+          <a href="/info/detail-7" class="news-item">
+            <div class="news-header">
+              <span class="news-date">2024.07.20</span>
+              <span class="news-category product">製品情報</span>
+            </div>
+            <h3 class="news-title">自動車用シート素材の新規受注について</h3>
+            <p class="news-excerpt">
+              大手自動車メーカーより、次世代電気自動車向けシート素材の受注が決定しました。軽量化と快適性を両立した新素材の採用となります。
+            </p>
+          </a>
+
+          <a href="/info/detail-8" class="news-item">
+            <div class="news-header">
+              <span class="news-date">2024.06.10</span>
+              <span class="news-category company">会社情報</span>
+            </div>
+            <h3 class="news-title">工場見学の受け入れを再開しました</h3>
+            <p class="news-excerpt">
+              新型コロナウイルス感染症の影響により中止していた工場見学の受け入れを再開しました。学生・企業の皆様からのお申し込みをお待ちしております。
+            </p>
+          </a>
+
+          <a href="/info/detail-9" class="news-item">
+            <div class="news-header">
+              <span class="news-date">2024.05.01</span>
+              <span class="news-category other">その他</span>
+            </div>
+            <h3 class="news-title">ゴールデンウィーク休業のお知らせ</h3>
+            <p class="news-excerpt">
+              5月3日(金)から5月6日(月)までゴールデンウィーク休業とさせていただきます。5月7日(火)より通常営業いたします。
+            </p>
+          </a>
+
+          <a href="/info/detail-10" class="news-item">
+            <div class="news-header">
+              <span class="news-date">2021.07.09</span>
+              <span class="news-category company">会社情報</span>
+            </div>
+            <h3 class="news-title">動画撮影</h3>
+            <p class="news-excerpt">
+              当社の製造現場や技術力を紹介する動画コンテンツを制作しました。最新鋭の設備と熟練の技術をご覧いただけます。
+            </p>
+          </a>
+        </div>
+
+        <!-- ページネーション -->
+        <div class="pagination">
+          <a href="#" class="page-btn disabled">‹</a>
+          <a href="#" class="page-btn active">1</a>
+          <a href="#" class="page-btn">2</a>
+          <a href="#" class="page-btn">3</a>
+          <a href="#" class="page-btn">4</a>
+          <a href="#" class="page-btn">5</a>
+          <a href="#" class="page-btn">›</a>
+        </div>
+      </div>
     </section>
 
     <section class="cta-section">
-        <div class="container">
-            <h2 class="cta-title">お気軽にお問い合わせください</h2>
-            <p class="cta-text">糸・生地のご相談から、採用情報まで承ります</p>
-            <div style="display: flex; gap: 20px; justify-content: center;">
-                <a href="tel:0761-57-1341" class="btn-white">📞 0761-57-1341</a>
-                <a href="asahigousen_contact_wireframe.html" class="btn-white">✉ お問い合わせフォーム</a>
-            </div>
+      <div class="container">
+        <h2 class="cta-title">お気軽にお問い合わせください</h2>
+        <p class="cta-text">糸・生地のご相談から、採用情報まで承ります</p>
+        <div style="display: flex; gap: 20px; justify-content: center">
+          <a href="tel:0761-57-1341" class="btn-white">📞 0761-57-1341</a>
+          <a href="asahigousen_contact_wireframe.html" class="btn-white"
+            >✉ お問い合わせフォーム</a
+          >
         </div>
+      </div>
     </section>
 
     <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-info">
-                <h3>株式会社アサヒゴウセン</h3>
-                <p>〒923-1101<br>石川県能美市粟生町ツ−20<br>TEL: 0761-57-1341<br>FAX: 0761-58-6170</p>
-            </div>
-            <div class="footer-nav"><h4>事業内容</h4><ul><li><a href="asahigousen_service_wireframe.html">糸加工</a></li><li><a href="asahigousen_service_wireframe.html">ニット製造</a></li><li><a href="asahigousen_service_wireframe.html">展開分野</a></li></ul></div>
-            <div class="footer-nav"><h4>会社情報</h4><ul><li><a href="asahigousen_about_wireframe.html">会社案内</a></li><li><a href="asahigousen_member_wireframe.html">従業員紹介</a></li><li><a href="asahigousen_member_wireframe.html">採用情報</a></li></ul></div>
-            <div class="footer-nav"><h4>その他</h4><ul><li><a href="asahigousen_info_wireframe.html">お知らせ</a></li><li><a href="asahigousen_contact_wireframe.html">お問い合わせ</a></li><li><a href="#">プライバシーポリシー</a></li></ul></div>
+      <div class="footer-inner">
+        <div class="footer-info">
+          <h3>株式会社アサヒゴウセン</h3>
+          <p>
+            〒923-1101<br />石川県能美市粟生町ツ−20<br />TEL: 0761-57-1341<br />FAX:
+            0761-58-6170
+          </p>
         </div>
-        <div class="footer-bottom">Copyright © 2025 ASAHIGOUSEN All Rights Reserved.</div>
+        <div class="footer-nav">
+          <h4>事業内容</h4>
+          <ul>
+            <li><a href="asahigousen_service_wireframe.html">糸加工</a></li>
+            <li><a href="asahigousen_service_wireframe.html">ニット製造</a></li>
+            <li><a href="asahigousen_service_wireframe.html">展開分野</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav">
+          <h4>会社情報</h4>
+          <ul>
+            <li><a href="asahigousen_about_wireframe.html">会社案内</a></li>
+            <li><a href="asahigousen_member_wireframe.html">従業員紹介</a></li>
+            <li><a href="asahigousen_member_wireframe.html">採用情報</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav">
+          <h4>その他</h4>
+          <ul>
+            <li><a href="asahigousen_info_wireframe.html">お知らせ</a></li>
+            <li>
+              <a href="asahigousen_contact_wireframe.html">お問い合わせ</a>
+            </li>
+            <li><a href="#">プライバシーポリシー</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        Copyright © 2025 ASAHIGOUSEN All Rights Reserved.
+      </div>
     </footer>
 
     <div class="wireframe-note">📐 ワイヤーフレーム</div>
-</body>
+  </body>
 </html>

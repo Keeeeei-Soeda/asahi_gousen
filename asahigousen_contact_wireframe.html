@@ -1,266 +1,666 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>お問い合わせ - アサヒゴウセン</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif; line-height: 1.6; color: #333; }
-        .header { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); z-index: 1000; border-bottom: 1px solid #eee; }
-        .header-inner { max-width: 1400px; margin: 0 auto; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 24px; font-weight: 700; color: #003d52; text-decoration: none; }
-        .nav { display: flex; gap: 40px; list-style: none; }
-        .nav a { color: #333; text-decoration: none; font-size: 15px; transition: color 0.3s; }
-        .nav a:hover { color: #0085b2; }
-        .btn-primary { background: #0085b2; color: white; padding: 12px 30px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
-        .breadcrumb { margin-top: 80px; padding: 20px 40px; background: #f8f9fa; }
-        .breadcrumb-inner { max-width: 1400px; margin: 0 auto; display: flex; gap: 10px; font-size: 14px; color: #666; }
-        .breadcrumb a { color: #666; text-decoration: none; }
-        .page-header { background: linear-gradient(135deg, #003d52 0%, #0085b2 100%); color: white; padding: 80px 40px; text-align: center; }
-        .page-title { font-size: 48px; font-weight: 700; margin-bottom: 20px; }
-        .page-subtitle { font-size: 18px; opacity: 0.9; }
-        .section { padding: 100px 40px; }
-        .container { max-width: 900px; margin: 0 auto; }
-        
-        /* お問い合わせ方法選択 */
-        .contact-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-bottom: 80px; }
-        .contact-method { text-align: center; padding: 40px 30px; background: #f8f9fa; border-radius: 8px; transition: all 0.3s; }
-        .contact-method:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
-        .contact-icon { width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .contact-method-title { font-size: 20px; font-weight: 700; margin-bottom: 15px; color: #003d52; }
-        .contact-method-text { font-size: 15px; color: #666; line-height: 1.8; margin-bottom: 20px; }
-        .contact-method-value { font-size: 18px; font-weight: 700; color: #0085b2; margin-bottom: 20px; }
-        .btn-secondary { display: inline-block; padding: 12px 30px; background: #0085b2; color: white; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: 600; transition: all 0.3s; }
-        .btn-secondary:hover { background: #006d92; }
-        
-        /* フォームセクション */
-        .form-section { background: white; border-radius: 12px; padding: 60px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        .form-intro { text-align: center; margin-bottom: 50px; }
-        .form-intro h3 { font-size: 28px; font-weight: 700; margin-bottom: 15px; color: #003d52; }
-        .form-intro p { font-size: 16px; color: #666; line-height: 1.8; }
-        
-        /* フォーム要素 */
-        .form-group { margin-bottom: 30px; }
-        .form-label { display: block; font-size: 15px; font-weight: 600; color: #333; margin-bottom: 10px; }
-        .form-required { color: #e53935; font-size: 13px; margin-left: 5px; }
-        .form-input { width: 100%; padding: 15px; border: 2px solid #e0e0e0; border-radius: 4px; font-size: 15px; transition: all 0.3s; }
-        .form-input:focus { outline: none; border-color: #0085b2; }
-        .form-textarea { width: 100%; padding: 15px; border: 2px solid #e0e0e0; border-radius: 4px; font-size: 15px; min-height: 200px; resize: vertical; font-family: inherit; transition: all 0.3s; }
-        .form-textarea:focus { outline: none; border-color: #0085b2; }
-        .form-select { width: 100%; padding: 15px; border: 2px solid #e0e0e0; border-radius: 4px; font-size: 15px; background: white; cursor: pointer; transition: all 0.3s; }
-        .form-select:focus { outline: none; border-color: #0085b2; }
-        .form-note { font-size: 13px; color: #999; margin-top: 5px; }
-        
-        /* チェックボックス */
-        .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
-        .checkbox-input { width: 20px; height: 20px; cursor: pointer; }
-        .checkbox-label { font-size: 14px; color: #666; cursor: pointer; }
-        .checkbox-label a { color: #0085b2; text-decoration: underline; }
-        
-        /* 送信ボタン */
-        .form-submit { text-align: center; }
-        .btn-submit { padding: 18px 80px; background: #0085b2; color: white; border: none; border-radius: 4px; font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.3s; }
-        .btn-submit:hover { background: #006d92; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,133,178,0.3); }
-        
-        /* プライバシー情報 */
-        .privacy-notice { background: #f8f9fa; padding: 30px; border-radius: 8px; margin-top: 40px; }
-        .privacy-notice h4 { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: #003d52; }
-        .privacy-notice p { font-size: 14px; color: #666; line-height: 1.8; }
-        
-        .footer { background: #1a1a1a; color: white; padding: 60px 40px 30px; }
-        .footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 40px; }
-        .footer-info h3 { font-size: 20px; margin-bottom: 20px; }
-        .footer-info p { font-size: 14px; line-height: 1.8; opacity: 0.8; }
-        .footer-nav h4 { font-size: 14px; margin-bottom: 15px; font-weight: 600; }
-        .footer-nav ul { list-style: none; }
-        .footer-nav li { margin-bottom: 10px; }
-        .footer-nav a { color: white; text-decoration: none; font-size: 14px; opacity: 0.7; }
-        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; opacity: 0.6; }
-        .wireframe-note { position: fixed; bottom: 20px; right: 20px; background: #ff6b6b; color: white; padding: 15px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 9999; }
-        
-        @media (max-width: 1024px) {
-            .contact-methods { grid-template-columns: 1fr; }
-            .footer-inner { grid-template-columns: 1fr 1fr; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+          "Noto Sans JP", sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        z-index: 1000;
+        border-bottom: 1px solid #eee;
+      }
+      .header-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        color: #003d52;
+        text-decoration: none;
+      }
+      .nav {
+        display: flex;
+        gap: 40px;
+        list-style: none;
+      }
+      .nav a {
+        color: #333;
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.3s;
+      }
+      .nav a:hover {
+        color: #0085b2;
+      }
+      .btn-primary {
+        background: #0085b2;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .breadcrumb {
+        margin-top: 80px;
+        padding: 20px 40px;
+        background: #f8f9fa;
+      }
+      .breadcrumb-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        gap: 10px;
+        font-size: 14px;
+        color: #666;
+      }
+      .breadcrumb a {
+        color: #666;
+        text-decoration: none;
+      }
+      .page-header {
+        background: linear-gradient(135deg, #003d52 0%, #0085b2 100%);
+        color: white;
+        padding: 80px 40px;
+        text-align: center;
+      }
+      .page-title {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      .page-subtitle {
+        font-size: 18px;
+        opacity: 0.9;
+      }
+      .section {
+        padding: 100px 40px;
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      /* お問い合わせ方法選択 */
+      .contact-methods {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-bottom: 80px;
+      }
+      .contact-method {
+        text-align: center;
+        padding: 40px 30px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        transition: all 0.3s;
+      }
+      .contact-method:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      }
+      .contact-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .contact-method-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #003d52;
+      }
+      .contact-method-text {
+        font-size: 15px;
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 20px;
+      }
+      .contact-method-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0085b2;
+        margin-bottom: 20px;
+      }
+      .btn-secondary {
+        display: inline-block;
+        padding: 12px 30px;
+        background: #0085b2;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .btn-secondary:hover {
+        background: #006d92;
+      }
+
+      /* フォームセクション */
+      .form-section {
+        background: white;
+        border-radius: 12px;
+        padding: 60px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .form-intro {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+      .form-intro h3 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #003d52;
+      }
+      .form-intro p {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.8;
+      }
+
+      /* フォーム要素 */
+      .form-group {
+        margin-bottom: 30px;
+      }
+      .form-label {
+        display: block;
+        font-size: 15px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+      }
+      .form-required {
+        color: #e53935;
+        font-size: 13px;
+        margin-left: 5px;
+      }
+      .form-input {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 15px;
+        transition: all 0.3s;
+      }
+      .form-input:focus {
+        outline: none;
+        border-color: #0085b2;
+      }
+      .form-textarea {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 15px;
+        min-height: 200px;
+        resize: vertical;
+        font-family: inherit;
+        transition: all 0.3s;
+      }
+      .form-textarea:focus {
+        outline: none;
+        border-color: #0085b2;
+      }
+      .form-select {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 15px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .form-select:focus {
+        outline: none;
+        border-color: #0085b2;
+      }
+      .form-note {
+        font-size: 13px;
+        color: #999;
+        margin-top: 5px;
+      }
+
+      /* チェックボックス */
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+      .checkbox-input {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+      .checkbox-label {
+        font-size: 14px;
+        color: #666;
+        cursor: pointer;
+      }
+      .checkbox-label a {
+        color: #0085b2;
+        text-decoration: underline;
+      }
+
+      /* 送信ボタン */
+      .form-submit {
+        text-align: center;
+      }
+      .btn-submit {
+        padding: 18px 80px;
+        background: #0085b2;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .btn-submit:hover {
+        background: #006d92;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 133, 178, 0.3);
+      }
+
+      /* プライバシー情報 */
+      .privacy-notice {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 8px;
+        margin-top: 40px;
+      }
+      .privacy-notice h4 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #003d52;
+      }
+      .privacy-notice p {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.8;
+      }
+
+      .footer {
+        background: #1a1a1a;
+        color: white;
+        padding: 60px 40px 30px;
+      }
+      .footer-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 60px;
+        margin-bottom: 40px;
+      }
+      .footer-info h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+      .footer-info p {
+        font-size: 14px;
+        line-height: 1.8;
+        opacity: 0.8;
+      }
+      .footer-nav h4 {
+        font-size: 14px;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+      .footer-nav ul {
+        list-style: none;
+      }
+      .footer-nav li {
+        margin-bottom: 10px;
+      }
+      .footer-nav a {
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        opacity: 0.7;
+      }
+      .footer-bottom {
+        text-align: center;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 13px;
+        opacity: 0.6;
+      }
+      .wireframe-note {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #ff6b6b;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+      }
+
+      @media (max-width: 1024px) {
+        .contact-methods {
+          grid-template-columns: 1fr;
         }
-        @media (max-width: 768px) {
-            .page-title { font-size: 32px; }
-            .form-section { padding: 30px 20px; }
-            .footer-inner { grid-template-columns: 1fr; }
-            .nav { display: none; }
+        .footer-inner {
+          grid-template-columns: 1fr 1fr;
         }
+      }
+      @media (max-width: 768px) {
+        .page-title {
+          font-size: 32px;
+        }
+        .form-section {
+          padding: 30px 20px;
+        }
+        .footer-inner {
+          grid-template-columns: 1fr;
+        }
+        .nav {
+          display: none;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header class="header">
-        <div class="header-inner">
-            <a href="asahigousen_top_v2.html" class="logo">アサヒゴウセン</a>
-            <nav><ul class="nav">
-                <li><a href="asahigousen_service_wireframe.html">事業内容</a></li>
-                <li><a href="asahigousen_about_wireframe.html">会社案内</a></li>
-                <li><a href="asahigousen_member_wireframe.html">従業員紹介</a></li>
-                <li><a href="asahigousen_info_wireframe.html">お知らせ</a></li>
-            </ul></nav>
-            <div><a href="asahigousen_contact_wireframe.html" class="btn-primary">お問い合わせ</a></div>
+      <div class="header-inner">
+        <a href="index.html" class="logo">アサヒゴウセン</a>
+        <nav>
+          <ul class="nav">
+            <li><a href="asahigousen_service_wireframe.html">事業内容</a></li>
+            <li><a href="asahigousen_about_wireframe.html">会社案内</a></li>
+            <li><a href="asahigousen_member_wireframe.html">従業員紹介</a></li>
+            <li><a href="asahigousen_info_wireframe.html">お知らせ</a></li>
+          </ul>
+        </nav>
+        <div>
+          <a href="asahigousen_contact_wireframe.html" class="btn-primary"
+            >お問い合わせ</a
+          >
         </div>
+      </div>
     </header>
 
     <div class="breadcrumb">
-        <div class="breadcrumb-inner">
-            <a href="asahigousen_top_v2.html">ホーム</a><span>›</span><span>お問い合わせ</span>
-        </div>
+      <div class="breadcrumb-inner">
+        <a href="index.html">ホーム</a><span>›</span><span>お問い合わせ</span>
+      </div>
     </div>
 
     <section class="page-header">
-        <h1 class="page-title">お問い合わせ</h1>
-        <p class="page-subtitle">CONTACT</p>
+      <h1 class="page-title">お問い合わせ</h1>
+      <p class="page-subtitle">CONTACT</p>
     </section>
 
     <section class="section">
-        <div class="container" style="max-width: 1200px;">
-            <!-- お問い合わせ方法選択 -->
-            <div class="contact-methods">
-                <div class="contact-method">
-                    <div class="contact-icon">📞</div>
-                    <h3 class="contact-method-title">お電話でのお問い合わせ</h3>
-                    <p class="contact-method-text">お急ぎの方はお電話でお問い合わせください</p>
-                    <div class="contact-method-value">0761-57-1341</div>
-                    <p style="font-size: 13px; color: #999;">受付時間: 平日 8:00〜17:00</p>
-                </div>
+      <div class="container" style="max-width: 1200px">
+        <!-- お問い合わせ方法選択 -->
+        <div class="contact-methods">
+          <div class="contact-method">
+            <div class="contact-icon">📞</div>
+            <h3 class="contact-method-title">お電話でのお問い合わせ</h3>
+            <p class="contact-method-text">
+              お急ぎの方はお電話でお問い合わせください
+            </p>
+            <div class="contact-method-value">0761-57-1341</div>
+            <p style="font-size: 13px; color: #999">
+              受付時間: 平日 8:00〜17:00
+            </p>
+          </div>
 
-                <div class="contact-method">
-                    <div class="contact-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">📠</div>
-                    <h3 class="contact-method-title">FAXでのお問い合わせ</h3>
-                    <p class="contact-method-text">資料をお送りいただく場合はFAXをご利用ください</p>
-                    <div class="contact-method-value">0761-58-6170</div>
-                    <p style="font-size: 13px; color: #999;">24時間受付</p>
-                </div>
-
-                <div class="contact-method">
-                    <div class="contact-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">✉️</div>
-                    <h3 class="contact-method-title">フォームでのお問い合わせ</h3>
-                    <p class="contact-method-text">下記フォームよりお問い合わせください</p>
-                    <a href="#form" class="btn-secondary">フォームへ</a>
-                </div>
+          <div class="contact-method">
+            <div
+              class="contact-icon"
+              style="
+                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+              "
+            >
+              📠
             </div>
-        </div>
+            <h3 class="contact-method-title">FAXでのお問い合わせ</h3>
+            <p class="contact-method-text">
+              資料をお送りいただく場合はFAXをご利用ください
+            </p>
+            <div class="contact-method-value">0761-58-6170</div>
+            <p style="font-size: 13px; color: #999">24時間受付</p>
+          </div>
 
-        <div class="container" id="form">
-            <!-- お問い合わせフォーム -->
-            <div class="form-section">
-                <div class="form-intro">
-                    <h3>お問い合わせフォーム</h3>
-                    <p>
-                        以下のフォームに必要事項をご記入の上、送信してください。<br>
-                        内容を確認後、担当者より3営業日以内にご連絡いたします。
-                    </p>
-                </div>
-
-                <form>
-                    <!-- お問い合わせ種別 -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            お問い合わせ種別<span class="form-required">必須</span>
-                        </label>
-                        <select class="form-select" required>
-                            <option value="">選択してください</option>
-                            <option value="product">製品に関するお問い合わせ</option>
-                            <option value="quote">見積もり依頼</option>
-                            <option value="sample">サンプル依頼</option>
-                            <option value="recruit">採用に関するお問い合わせ</option>
-                            <option value="visit">工場見学のお申し込み</option>
-                            <option value="other">その他</option>
-                        </select>
-                    </div>
-
-                    <!-- 会社名 -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            会社名・団体名<span class="form-required">必須</span>
-                        </label>
-                        <input type="text" class="form-input" placeholder="例: 株式会社〇〇" required>
-                    </div>
-
-                    <!-- お名前 -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            お名前<span class="form-required">必須</span>
-                        </label>
-                        <input type="text" class="form-input" placeholder="例: 山田 太郎" required>
-                    </div>
-
-                    <!-- メールアドレス -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            メールアドレス<span class="form-required">必須</span>
-                        </label>
-                        <input type="email" class="form-input" placeholder="例: example@example.com" required>
-                        <p class="form-note">※半角英数字でご入力ください</p>
-                    </div>
-
-                    <!-- 電話番号 -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            電話番号<span class="form-required">必須</span>
-                        </label>
-                        <input type="tel" class="form-input" placeholder="例: 0761-57-1341" required>
-                        <p class="form-note">※ハイフンありでご入力ください</p>
-                    </div>
-
-                    <!-- 住所 -->
-                    <div class="form-group">
-                        <label class="form-label">ご住所</label>
-                        <input type="text" class="form-input" placeholder="例: 石川県能美市粟生町ツ−20">
-                    </div>
-
-                    <!-- お問い合わせ内容 -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            お問い合わせ内容<span class="form-required">必須</span>
-                        </label>
-                        <textarea class="form-textarea" placeholder="お問い合わせ内容をできるだけ詳しくご記入ください" required></textarea>
-                    </div>
-
-                    <!-- プライバシーポリシー同意 -->
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="privacy" class="checkbox-input" required>
-                        <label for="privacy" class="checkbox-label">
-                            <a href="/privacy" target="_blank">プライバシーポリシー</a>に同意する<span class="form-required">必須</span>
-                        </label>
-                    </div>
-
-                    <!-- 送信ボタン -->
-                    <div class="form-submit">
-                        <button type="submit" class="btn-submit">送信する</button>
-                    </div>
-                </form>
-
-                <!-- プライバシー情報 -->
-                <div class="privacy-notice">
-                    <h4>個人情報の取り扱いについて</h4>
-                    <p>
-                        お客様からいただいた個人情報は、お問い合わせへの対応および当社サービスのご案内のみに使用し、
-                        お客様の同意なく第三者に開示・提供することはございません。
-                        詳しくは<a href="/privacy" style="color: #0085b2; text-decoration: underline;">プライバシーポリシー</a>をご覧ください。
-                    </p>
-                </div>
+          <div class="contact-method">
+            <div
+              class="contact-icon"
+              style="
+                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+              "
+            >
+              ✉️
             </div>
+            <h3 class="contact-method-title">フォームでのお問い合わせ</h3>
+            <p class="contact-method-text">
+              下記フォームよりお問い合わせください
+            </p>
+            <a href="#form" class="btn-secondary">フォームへ</a>
+          </div>
         </div>
+      </div>
+
+      <div class="container" id="form">
+        <!-- お問い合わせフォーム -->
+        <div class="form-section">
+          <div class="form-intro">
+            <h3>お問い合わせフォーム</h3>
+            <p>
+              以下のフォームに必要事項をご記入の上、送信してください。<br />
+              内容を確認後、担当者より3営業日以内にご連絡いたします。
+            </p>
+          </div>
+
+          <form>
+            <!-- お問い合わせ種別 -->
+            <div class="form-group">
+              <label class="form-label">
+                お問い合わせ種別<span class="form-required">必須</span>
+              </label>
+              <select class="form-select" required>
+                <option value="">選択してください</option>
+                <option value="product">製品に関するお問い合わせ</option>
+                <option value="quote">見積もり依頼</option>
+                <option value="sample">サンプル依頼</option>
+                <option value="recruit">採用に関するお問い合わせ</option>
+                <option value="visit">工場見学のお申し込み</option>
+                <option value="other">その他</option>
+              </select>
+            </div>
+
+            <!-- 会社名 -->
+            <div class="form-group">
+              <label class="form-label">
+                会社名・団体名<span class="form-required">必須</span>
+              </label>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="例: 株式会社〇〇"
+                required
+              />
+            </div>
+
+            <!-- お名前 -->
+            <div class="form-group">
+              <label class="form-label">
+                お名前<span class="form-required">必須</span>
+              </label>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="例: 山田 太郎"
+                required
+              />
+            </div>
+
+            <!-- メールアドレス -->
+            <div class="form-group">
+              <label class="form-label">
+                メールアドレス<span class="form-required">必須</span>
+              </label>
+              <input
+                type="email"
+                class="form-input"
+                placeholder="例: example@example.com"
+                required
+              />
+              <p class="form-note">※半角英数字でご入力ください</p>
+            </div>
+
+            <!-- 電話番号 -->
+            <div class="form-group">
+              <label class="form-label">
+                電話番号<span class="form-required">必須</span>
+              </label>
+              <input
+                type="tel"
+                class="form-input"
+                placeholder="例: 0761-57-1341"
+                required
+              />
+              <p class="form-note">※ハイフンありでご入力ください</p>
+            </div>
+
+            <!-- 住所 -->
+            <div class="form-group">
+              <label class="form-label">ご住所</label>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="例: 石川県能美市粟生町ツ−20"
+              />
+            </div>
+
+            <!-- お問い合わせ内容 -->
+            <div class="form-group">
+              <label class="form-label">
+                お問い合わせ内容<span class="form-required">必須</span>
+              </label>
+              <textarea
+                class="form-textarea"
+                placeholder="お問い合わせ内容をできるだけ詳しくご記入ください"
+                required
+              ></textarea>
+            </div>
+
+            <!-- プライバシーポリシー同意 -->
+            <div class="checkbox-group">
+              <input
+                type="checkbox"
+                id="privacy"
+                class="checkbox-input"
+                required
+              />
+              <label for="privacy" class="checkbox-label">
+                <a href="/privacy" target="_blank">プライバシーポリシー</a
+                >に同意する<span class="form-required">必須</span>
+              </label>
+            </div>
+
+            <!-- 送信ボタン -->
+            <div class="form-submit">
+              <button type="submit" class="btn-submit">送信する</button>
+            </div>
+          </form>
+
+          <!-- プライバシー情報 -->
+          <div class="privacy-notice">
+            <h4>個人情報の取り扱いについて</h4>
+            <p>
+              お客様からいただいた個人情報は、お問い合わせへの対応および当社サービスのご案内のみに使用し、
+              お客様の同意なく第三者に開示・提供することはございません。
+              詳しくは<a
+                href="/privacy"
+                style="color: #0085b2; text-decoration: underline"
+                >プライバシーポリシー</a
+              >をご覧ください。
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-info">
-                <h3>株式会社アサヒゴウセン</h3>
-                <p>〒923-1101<br>石川県能美市粟生町ツ−20<br>TEL: 0761-57-1341<br>FAX: 0761-58-6170</p>
-            </div>
-            <div class="footer-nav"><h4>事業内容</h4><ul><li><a href="asahigousen_service_wireframe.html">糸加工</a></li><li><a href="asahigousen_service_wireframe.html">ニット製造</a></li><li><a href="asahigousen_service_wireframe.html">展開分野</a></li></ul></div>
-            <div class="footer-nav"><h4>会社情報</h4><ul><li><a href="asahigousen_about_wireframe.html">会社案内</a></li><li><a href="asahigousen_member_wireframe.html">従業員紹介</a></li><li><a href="asahigousen_member_wireframe.html">採用情報</a></li></ul></div>
-            <div class="footer-nav"><h4>その他</h4><ul><li><a href="asahigousen_info_wireframe.html">お知らせ</a></li><li><a href="asahigousen_contact_wireframe.html">お問い合わせ</a></li><li><a href="#">プライバシーポリシー</a></li></ul></div>
+      <div class="footer-inner">
+        <div class="footer-info">
+          <h3>株式会社アサヒゴウセン</h3>
+          <p>
+            〒923-1101<br />石川県能美市粟生町ツ−20<br />TEL: 0761-57-1341<br />FAX:
+            0761-58-6170
+          </p>
         </div>
-        <div class="footer-bottom">Copyright © 2025 ASAHIGOUSEN All Rights Reserved.</div>
+        <div class="footer-nav">
+          <h4>事業内容</h4>
+          <ul>
+            <li><a href="asahigousen_service_wireframe.html">糸加工</a></li>
+            <li><a href="asahigousen_service_wireframe.html">ニット製造</a></li>
+            <li><a href="asahigousen_service_wireframe.html">展開分野</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav">
+          <h4>会社情報</h4>
+          <ul>
+            <li><a href="asahigousen_about_wireframe.html">会社案内</a></li>
+            <li><a href="asahigousen_member_wireframe.html">従業員紹介</a></li>
+            <li><a href="asahigousen_member_wireframe.html">採用情報</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav">
+          <h4>その他</h4>
+          <ul>
+            <li><a href="asahigousen_info_wireframe.html">お知らせ</a></li>
+            <li>
+              <a href="asahigousen_contact_wireframe.html">お問い合わせ</a>
+            </li>
+            <li><a href="#">プライバシーポリシー</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        Copyright © 2025 ASAHIGOUSEN All Rights Reserved.
+      </div>
     </footer>
 
     <div class="wireframe-note">📐 ワイヤーフレーム</div>
-</body>
+  </body>
 </html>
