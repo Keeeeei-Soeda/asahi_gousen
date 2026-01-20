@@ -1,0 +1,12 @@
+# ZIPファイル
+*.zip
+
+# 一時ファイル
+.DS_Store
+*.swp
+*.swo
+*~
+
+# imagesフォルダ（WordPressの画像ファイル）
+images/
+
