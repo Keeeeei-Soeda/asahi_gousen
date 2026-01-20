@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>従業員紹介・採用情報 - アサヒゴウセン</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif; line-height: 1.6; color: #333; }
+        .header { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); z-index: 1000; border-bottom: 1px solid #eee; }
+        .header-inner { max-width: 1400px; margin: 0 auto; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 700; color: #003d52; text-decoration: none; }
+        .nav { display: flex; gap: 40px; list-style: none; }
+        .nav a { color: #333; text-decoration: none; font-size: 15px; transition: color 0.3s; }
+        .nav a:hover { color: #0085b2; }
+        .nav a.active { color: #0085b2; font-weight: 600; }
+        .btn-primary { background: #0085b2; color: white; padding: 12px 30px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
+        .breadcrumb { margin-top: 80px; padding: 20px 40px; background: #f8f9fa; }
+        .breadcrumb-inner { max-width: 1400px; margin: 0 auto; display: flex; gap: 10px; font-size: 14px; color: #666; }
+        .breadcrumb a { color: #666; text-decoration: none; }
+        .page-header { background: linear-gradient(135deg, #003d52 0%, #0085b2 100%); color: white; padding: 80px 40px; text-align: center; }
+        .page-title { font-size: 48px; font-weight: 700; margin-bottom: 20px; }
+        .page-subtitle { font-size: 18px; opacity: 0.9; }
+        .section { padding: 100px 40px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-title { font-size: 14px; letter-spacing: 0.2em; color: #0085b2; margin-bottom: 15px; font-weight: 600; }
+        .section-heading { font-size: 36px; font-weight: 700; margin-bottom: 20px; }
+        .section-description { font-size: 16px; color: #666; line-height: 1.8; max-width: 800px; margin: 0 auto; }
+        .hero-image { height: 70vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 120px; }
+        .member-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .member-card { border-radius: 8px; overflow: hidden; background: white; box-shadow: 0 4px 20px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .member-card:hover { transform: translateY(-10px); }
+        .member-image { width: 100%; height: 400px; }
+        .member-info { padding: 30px; }
+        .member-role { font-size: 14px; color: #0085b2; font-weight: 600; margin-bottom: 10px; }
+        .member-name { font-size: 24px; font-weight: 700; margin-bottom: 15px; }
+        .member-message { font-size: 15px; color: #666; line-height: 1.8; }
+        .culture-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+        .culture-card { display: flex; gap: 30px; align-items: start; padding: 40px; background: #f8f9fa; border-radius: 8px; }
+        .culture-icon { width: 80px; height: 80px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+        .culture-content { flex: 1; }
+        .culture-title { font-size: 20px; font-weight: 700; margin-bottom: 15px; color: #003d52; }
+        .culture-text { font-size: 15px; color: #666; line-height: 1.8; }
+        .recruit-section { background: #f8f9fa; }
+        .recruit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        .recruit-card { background: white; padding: 40px; border-radius: 8px; }
+        .recruit-title { font-size: 24px; font-weight: 700; margin-bottom: 20px; color: #003d52; }
+        .recruit-item { margin-bottom: 20px; }
+        .recruit-label { font-size: 14px; color: #0085b2; font-weight: 600; margin-bottom: 5px; }
+        .recruit-value { font-size: 15px; color: #666; line-height: 1.8; }
+        .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .benefit-card { text-align: center; padding: 30px; background: white; border-radius: 8px; }
+        .benefit-icon { width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+        .benefit-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+        .benefit-text { font-size: 14px; color: #666; line-height: 1.7; }
+        .cta-section { background: #003d52; color: white; padding: 80px 40px; text-align: center; }
+        .cta-title { font-size: 36px; font-weight: 700; margin-bottom: 20px; }
+        .cta-text { font-size: 16px; margin-bottom: 40px; opacity: 0.9; }
+        .btn-white { background: white; color: #003d52; padding: 15px 40px; border-radius: 4px; text-decoration: none; font-size: 16px; font-weight: 600; }
+        .footer { background: #1a1a1a; color: white; padding: 60px 40px 30px; }
+        .footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 40px; }
+        .footer-info h3 { font-size: 20px; margin-bottom: 20px; }
+        .footer-info p { font-size: 14px; line-height: 1.8; opacity: 0.8; }
+        .footer-nav h4 { font-size: 14px; margin-bottom: 15px; font-weight: 600; }
+        .footer-nav ul { list-style: none; }
+        .footer-nav li { margin-bottom: 10px; }
+        .footer-nav a { color: white; text-decoration: none; font-size: 14px; opacity: 0.7; }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; opacity: 0.6; }
+        .wireframe-note { position: fixed; bottom: 20px; right: 20px; background: #ff6b6b; color: white; padding: 15px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 9999; }
+        @media (max-width: 1024px) {
+            .member-grid { grid-template-columns: repeat(2, 1fr); }
+            .culture-grid { grid-template-columns: 1fr; }
+            .recruit-grid { grid-template-columns: 1fr; }
+            .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .page-title { font-size: 32px; }
+            .member-grid { grid-template-columns: 1fr; }
+            .benefits-grid { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr; }
+            .nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">アサヒゴウセン</a>
+            <nav><ul class="nav">
+                <li><a href="/service">事業内容</a></li>
+                <li><a href="/about">会社案内</a></li>
+                <li><a href="/member" class="active">従業員紹介</a></li>
+                <li><a href="/news">お知らせ</a></li>
+            </ul></nav>
+            <div><a href="/contact" class="btn-primary">お問い合わせ</a></div>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <div class="breadcrumb-inner">
+            <a href="/">ホーム</a><span>›</span><span>従業員紹介</span>
+        </div>
+    </div>
+
+    <section class="page-header">
+        <h1 class="page-title">従業員紹介・採用情報</h1>
+        <p class="page-subtitle">MEMBER & RECRUIT</p>
+    </section>
+
+    <!-- ヒーローイメージ -->
+    <section class="hero-image">
+        👷‍♂️
+    </section>
+
+    <!-- 従業員紹介 -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">MEMBER</h2>
+                <h3 class="section-heading">従業員の声</h3>
+                <p class="section-description">
+                    正直で真面目、地道な努力を積み重ねる。<br>
+                    プロ意識を持った従業員が、高品質を支えています。
+                </p>
+            </div>
+
+            <div class="member-grid">
+                <div class="member-card">
+                    <div class="member-image" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 80px;">👷</div>
+                    <div class="member-info">
+                        <div class="member-role">生産技術部</div>
+                        <h4 class="member-name">機械オペレーター</h4>
+                        <p class="member-message">
+                            日々の作業で品質を守り、お客様に信頼される製品を作り続けることにやりがいを感じています。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="member-image" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 80px;">🔍</div>
+                    <div class="member-info">
+                        <div class="member-role">品質管理部</div>
+                        <h4 class="member-name">検査担当</h4>
+                        <p class="member-message">
+                            細部まで目を配り、不良品を出さないことが私たちの使命です。お客様の笑顔が励みになります。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="member-image" style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 80px;">🔬</div>
+                    <div class="member-info">
+                        <div class="member-role">開発部</div>
+                        <h4 class="member-name">サンプル製作</h4>
+                        <p class="member-message">
+                            新しい素材の開発に挑戦できる環境があり、自分のアイデアが形になる喜びがあります。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="member-image" style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 80px;">💼</div>
+                    <div class="member-info">
+                        <div class="member-role">営業部</div>
+                        <h4 class="member-name">顧客対応</h4>
+                        <p class="member-message">
+                            お客様のニーズをしっかり聞き、最適な提案ができるよう日々努力しています。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="member-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 80px;">📦</div>
+                    <div class="member-info">
+                        <div class="member-role">物流部</div>
+                        <h4 class="member-name">出荷管理</h4>
+                        <p class="member-message">
+                            正確で迅速な出荷を心がけ、お客様に安心してもらえるよう取り組んでいます。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="member-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 80px;">⚙️</div>
+                    <div class="member-info">
+                        <div class="member-role">保全部</div>
+                        <h4 class="member-name">設備メンテナンス</h4>
+                        <p class="member-message">
+                            機械を常に最高の状態に保つことで、安定した生産をサポートしています。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 職場環境 -->
+    <section class="section" style="background: #f8f9fa;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">WORK CULTURE</h2>
+                <h3 class="section-heading">職場環境</h3>
+            </div>
+
+            <div class="culture-grid">
+                <div class="culture-card">
+                    <div class="culture-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🤝</div>
+                    <div class="culture-content">
+                        <h4 class="culture-title">チームワークを大切に</h4>
+                        <p class="culture-text">
+                            部署を超えた連携を重視し、全員が協力して課題解決に取り組む風土があります。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="culture-card">
+                    <div class="culture-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">📚</div>
+                    <div class="culture-content">
+                        <h4 class="culture-title">学びの機会</h4>
+                        <p class="culture-text">
+                            社内研修や外部セミナーへの参加を支援。技術力向上のためのサポート体制が充実しています。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="culture-card">
+                    <div class="culture-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">⚖️</div>
+                    <div class="culture-content">
+                        <h4 class="culture-title">ワークライフバランス</h4>
+                        <p class="culture-text">
+                            有給休暇の取得を推奨し、残業時間の削減に努めています。家庭と仕事の両立を応援します。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="culture-card">
+                    <div class="culture-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">💪</div>
+                    <div class="culture-content">
+                        <h4 class="culture-title">キャリアアップ支援</h4>
+                        <p class="culture-text">
+                            実力主義の評価制度で、やる気のある社員の成長をしっかりサポートします。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 採用情報 -->
+    <section class="section recruit-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">RECRUIT</h2>
+                <h3 class="section-heading">採用情報</h3>
+                <p class="section-description">
+                    アサヒゴウセンで一緒に働きませんか？<br>
+                    やる気のある方のご応募をお待ちしています。
+                </p>
+            </div>
+
+            <div class="recruit-grid">
+                <div class="recruit-card">
+                    <h4 class="recruit-title">募集職種</h4>
+                    <div class="recruit-item">
+                        <div class="recruit-label">生産技術</div>
+                        <div class="recruit-value">機械オペレーター、生産管理</div>
+                    </div>
+                    <div class="recruit-item">
+                        <div class="recruit-label">品質管理</div>
+                        <div class="recruit-value">検査・品質保証業務</div>
+                    </div>
+                    <div class="recruit-item">
+                        <div class="recruit-label">営業</div>
+                        <div class="recruit-value">法人営業、新規開拓</div>
+                    </div>
+                    <div class="recruit-item">
+                        <div class="recruit-label">開発</div>
+                        <div class="recruit-value">新素材開発、サンプル製作</div>
+                    </div>
+                </div>
+
+                <div class="recruit-card">
+                    <h4 class="recruit-title">応募資格</h4>
+                    <div class="recruit-item">
+                        <div class="recruit-label">学歴</div>
+                        <div class="recruit-value">高卒以上</div>
+                    </div>
+                    <div class="recruit-item">
+                        <div class="recruit-label">経験</div>
+                        <div class="recruit-value">未経験者歓迎（研修制度あり）</div>
+                    </div>
+                    <div class="recruit-item">
+                        <div class="recruit-label">求める人物像</div>
+                        <div class="recruit-value">
+                            ・ものづくりに興味がある方<br>
+                            ・チームワークを大切にできる方<br>
+                            ・向上心を持って取り組める方
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recruit-card">
+                    <h4 class="recruit-title">勤務条件</h4>
+                    <div class="recruit-item">
+                        <div class="recruit-label">勤務時間</div>
+                        <div class="recruit-value">8:00〜17:00（実働8時間）</div>
+                    </div>
+                    <div class="recruit-item">
+                        <div class="recruit-label">休日</div>
+                        <div class="recruit-value">週休2日制（土日）、祝日、年末年始、夏季休暇</div>
+                    </div>
+                    <div class="recruit-item">
+                        <div class="recruit-label">休暇</div>
+                        <div class="recruit-value">年次有給休暇、慶弔休暇</div>
+                    </div>
+                </div>
+
+                <div class="recruit-card">
+                    <h4 class="recruit-title">待遇・福利厚生</h4>
+                    <div class="recruit-item">
+                        <div class="recruit-label">給与</div>
+                        <div class="recruit-value">経験・能力を考慮の上、当社規定により決定</div>
+                    </div>
+                    <div class="recruit-item">
+                        <div class="recruit-label">昇給・賞与</div>
+                        <div class="recruit-value">昇給年1回、賞与年2回</div>
+                    </div>
+                    <div class="recruit-item">
+                        <div class="recruit-label">保険</div>
+                        <div class="recruit-value">各種社会保険完備（健康保険、厚生年金、雇用保険、労災保険）</div>
+                    </div>
+                    <div class="recruit-item">
+                        <div class="recruit-label">その他</div>
+                        <div class="recruit-value">退職金制度、社員旅行、健康診断</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 福利厚生 -->
+            <div style="margin-top: 80px;">
+                <h4 style="text-align: center; font-size: 24px; font-weight: 700; margin-bottom: 40px; color: #003d52;">主な福利厚生</h4>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">🏥</div>
+                        <h5 class="benefit-title">各種社会保険完備</h5>
+                        <p class="benefit-text">健康保険・厚生年金・雇用保険・労災保険</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">💰</div>
+                        <h5 class="benefit-title">退職金制度</h5>
+                        <p class="benefit-text">長期勤続をサポート</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon" style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);">🏖️</div>
+                        <h5 class="benefit-title">充実の休暇制度</h5>
+                        <p class="benefit-text">年次有給休暇・夏季休暇・年末年始休暇</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon" style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);">📚</div>
+                        <h5 class="benefit-title">研修制度</h5>
+                        <p class="benefit-text">社内外の研修で成長をサポート</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🚗</div>
+                        <h5 class="benefit-title">通勤手当</h5>
+                        <p class="benefit-text">マイカー通勤可能</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">✈️</div>
+                        <h5 class="benefit-title">社員旅行</h5>
+                        <p class="benefit-text">年1回の社員旅行でリフレッシュ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">採用に関するお問い合わせ</h2>
+            <p class="cta-text">ご不明な点やご質問がございましたら、お気軽にお問い合わせください</p>
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <a href="tel:0761-57-1341" class="btn-white">📞 0761-57-1341</a>
+                <a href="/contact" class="btn-white">✉ 採用お問い合わせフォーム</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-info">
+                <h3>株式会社アサヒゴウセン</h3>
+                <p>〒923-1101<br>石川県能美市粟生町ツ−20<br>TEL: 0761-57-1341<br>FAX: 0761-58-6170</p>
+            </div>
+            <div class="footer-nav"><h4>事業内容</h4><ul><li><a href="#">糸加工</a></li><li><a href="#">ニット製造</a></li><li><a href="#">展開分野</a></li></ul></div>
+            <div class="footer-nav"><h4>会社情報</h4><ul><li><a href="#">会社案内</a></li><li><a href="#">従業員紹介</a></li><li><a href="#">採用情報</a></li></ul></div>
+            <div class="footer-nav"><h4>その他</h4><ul><li><a href="#">お知らせ</a></li><li><a href="#">お問い合わせ</a></li><li><a href="#">プライバシーポリシー</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">Copyright © 2025 ASAHIGOUSEN All Rights Reserved.</div>
+    </footer>
+
+    <div class="wireframe-note">📐 ワイヤーフレーム</div>
+</body>
+</html>

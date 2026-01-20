@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アサヒゴウセン - トップページワイヤーフレーム</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+
+        /* ヘッダー */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid #eee;
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #003d52;
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav a {
+            color: #333;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #0085b2;
+        }
+
+        .header-cta {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-primary {
+            background: #0085b2;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #006d92;
+        }
+
+        /* メインビジュアル */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 80px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+            max-width: 900px;
+            padding: 0 40px;
+        }
+
+        .hero-catch {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 30px;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-subcatch {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        /* お知らせティッカー */
+        .news-ticker {
+            background: #003d52;
+            color: white;
+            padding: 15px 0;
+        }
+
+        .news-ticker-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .news-date {
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .news-title {
+            font-size: 15px;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* セクション共通 */
+        .section {
+            padding: 100px 40px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            letter-spacing: 0.2em;
+            color: #0085b2;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 事業内容セクション */
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .service-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-card-image {
+            width: 100%;
+            height: 400px;
+        }
+
+        .service-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 40px 30px;
+            color: white;
+        }
+
+        .service-card-label {
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .service-card-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .service-card-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* スプリットセクション */
+        .split-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            align-items: center;
+            margin-bottom: 100px;
+        }
+
+        .split-image {
+            width: 100%;
+            height: 600px;
+        }
+
+        .split-content {
+            padding: 80px;
+            background: #f8f9fa;
+        }
+
+        .split-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .split-text {
+            font-size: 16px;
+            line-height: 1.9;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* 従業員セクション */
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .member-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .member-card-image {
+            width: 100%;
+            height: 350px;
+            transition: transform 0.3s;
+        }
+
+        .member-card:hover .member-card-image {
+            transform: scale(1.05);
+        }
+
+        .member-card-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 25px 20px;
+            color: white;
+        }
+
+        .member-role {
+            font-size: 12px;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+
+        .member-name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* CTAセクション */
+        .cta-section {
+            background: #003d52;
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .cta-text {
+            font-size: 16px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn-white {
+            background: white;
+            color: #003d52;
+            padding: 15px 40px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-white:hover {
+            background: #f0f0f0;
+        }
+
+        /* フッター */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 60px 40px 30px;
+        }
+
+        .footer-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-info h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .footer-info p {
+            font-size: 14px;
+            line-height: 1.8;
+            opacity: 0.8;
+        }
+
+        .footer-nav h4 {
+            font-size: 14px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .footer-nav ul {
+            list-style: none;
+        }
+
+        .footer-nav li {
+            margin-bottom: 10px;
+        }
+
+        .footer-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .footer-nav a:hover {
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 13px;
+            opacity: 0.6;
+        }
+
+        /* ボタン共通 */
+        .btn-more {
+            display: inline-block;
+            padding: 15px 50px;
+            background: transparent;
+            border: 2px solid #003d52;
+            color: #003d52;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-more:hover {
+            background: #003d52;
+            color: white;
+        }
+
+        /* ニュースグリッド */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .news-card-image {
+            width: 100%;
+            height: 250px;
+        }
+
+        .news-card-content {
+            padding: 30px;
+        }
+
+        .news-card-date {
+            margin-bottom: 15px;
+        }
+
+        .news-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .news-card-excerpt {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        /* 注釈 */
+        .wireframe-note {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 1024px) {
+            .service-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .split-section {
+                grid-template-columns: 1fr;
+            }
+
+            .member-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-catch {
+                font-size: 32px;
+            }
+
+            .split-content {
+                padding: 40px 30px;
+            }
+
+            .member-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="#" class="logo">アサヒゴウセン</a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="#service">事業内容</a></li>
+                    <li><a href="#about">会社案内</a></li>
+                    <li><a href="#member">従業員紹介</a></li>
+                    <li><a href="#news">お知らせ</a></li>
+                </ul>
+            </nav>
+            <div class="header-cta">
+                <a href="#contact" class="btn-primary">お問い合わせ</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインビジュアル -->
+    <section class="hero" style="background: url('K2A6528.jpg') center/cover; position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4);"></div>
+        <div class="hero-content">
+            <h1 class="hero-catch">糸が未来を編み出す。<br>技術で生地を創り続ける。</h1>
+            <p class="hero-subcatch">北陸・石川から、高品質な加工糸と丸編ニットを。<br>お客様の信頼に応える、誠実なものづくり。</p>
+        </div>
+    </section>
+
+    <!-- お知らせティッカー -->
+    <div class="news-ticker">
+        <div class="news-ticker-inner">
+            <span class="news-date">2025.01.20</span>
+            <span class="news-title">アサヒゴウセンの省エネに対する取組(2025年度)を公開しました</span>
+        </div>
+    </div>
+
+    <!-- 社長メッセージセクション -->
+    <section class="section" id="message" style="padding: 0; margin-bottom: 100px;">
+        <div class="split-section" style="margin-bottom: 0;">
+            <div class="split-content" style="background: #fff; padding: 100px 80px;">
+                <div style="font-size: 12px; letter-spacing: 0.2em; color: #0085b2; margin-bottom: 20px; font-weight: 600;">MESSAGE</div>
+                <h2 class="split-title">感謝と謙虚を忘れず、<br>誠実に製品を作り続ける</h2>
+                <p class="split-text">
+                    社会の様々な分野で更なる高付加価値を求められています。<br>
+                    蓄積された知識とノウハウをベースに、たゆまぬ技術研鑚と創造力で企画開発を行い、<br>
+                    お客様が要望する製品イメージを実現しています。<br><br>
+                    そんな私たちは、いわば"縁の下の力持ち"。<br>
+                    お客様からの期待と信頼に応え、多くのブランドを支えています。<br><br>
+                    糸と丸編ニットと言えば、一番最初に顔が思い浮かぶ会社でありたい。
+                </p>
+                <div style="margin-top: 40px;">
+                    <p style="font-size: 14px; color: #666; margin-bottom: 5px;">代表取締役社長</p>
+                    <p style="font-size: 24px; font-weight: 700; color: #003d52;">田中 寛史</p>
+                </div>
+            </div>
+            <div class="split-image" style="background: url('hirohitotanaka.jpg') center/cover;"></div>
+        </div>
+    </section>
+
+    <!-- 事業内容セクション -->
+    <section class="section" id="service">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">SERVICE</h2>
+                <p class="section-subtitle">
+                    糸加工から丸編ニットまで、一貫した技術力で<br>
+                    お客様の製品づくりをサポートします
+                </p>
+            </div>
+
+            <div class="service-cards">
+                <div class="service-card">
+                    <div class="service-card-image" style="background: url('K2A6528.jpg') center/cover;"></div>
+                    <div class="service-card-content">
+                        <div class="service-card-label">SERVICE 01</div>
+                        <h3 class="service-card-title">糸加工</h3>
+                        <p class="service-card-desc">
+                            合繊化繊の仮撚加工・複合加工。<br>
+                            細い糸から太い糸まで対応。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-card-image" style="background: url('K2A6396.jpg') center/cover;"></div>
+                    <div class="service-card-content">
+                        <div class="service-card-label">SERVICE 02</div>
+                        <h3 class="service-card-title">ニット(丸編み)</h3>
+                        <p class="service-card-desc">
+                            衣料用途・産業資材用途の<br>
+                            丸編ニット生地の開発・生産。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-card-image" style="background: url('K2A6405.jpg') center/cover;"></div>
+                    <div class="service-card-content">
+                        <div class="service-card-label">SERVICE 03</div>
+                        <h3 class="service-card-title">展開分野</h3>
+                        <p class="service-card-desc">
+                            衣料・自動車・医療介護など<br>
+                            幅広い分野で活躍。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="#" class="btn-more">事業内容を詳しく見る</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 会社紹介セクション -->
+    <section class="section" id="about" style="padding: 0;">
+        <div class="split-section">
+            <div class="split-image" style="background: url('company.jpg') center/cover;"></div>
+            <div class="split-content">
+                <h2 class="split-title">北陸の地で、<br>60年の信頼と技術</h2>
+                <p class="split-text">
+                    昭和39年、旭化成株式会社との協業でスタート。<br>
+                    以来、高品質な加工糸と丸編ニットを通じて、<br>
+                    お客様のブランドを支え続けています。<br><br>
+                    日々創意工夫。感謝と謙虚を忘れず、<br>
+                    誠実に製品を作り続けます。
+                </p>
+                <a href="#" class="btn-more">会社案内を見る</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 最新ニュースセクション -->
+    <section class="section" id="news" style="background: #f8f9fa;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">NEWS</h2>
+                <p class="section-subtitle">
+                    当社の最新情報をお届けします
+                </p>
+            </div>
+
+            <div class="news-grid">
+                <article class="news-card">
+                    <a href="#" class="news-card-link">
+                        <div class="news-card-image" style="background: url('company.jpg') center/cover;"></div>
+                        <div class="news-card-content">
+                            <div class="news-card-date">
+                                <span style="font-size: 14px; color: #0085b2; font-weight: 600;">2025.01.20</span>
+                            </div>
+                            <h3 class="news-card-title">アサヒゴウセンの省エネに対する取組(2025年度)</h3>
+                            <p class="news-card-excerpt">
+                                2025年度の省エネルギー対策について、具体的な取り組み内容を公開しました。
+                            </p>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="news-card">
+                    <a href="#" class="news-card-link">
+                        <div class="news-card-image" style="background: url('K2A6528.jpg') center/cover;"></div>
+                        <div class="news-card-content">
+                            <div class="news-card-date">
+                                <span style="font-size: 14px; color: #0085b2; font-weight: 600;">2024.11.05</span>
+                            </div>
+                            <h3 class="news-card-title">アサヒゴウセンの省エネに対する取組</h3>
+                            <p class="news-card-excerpt">
+                                環境への配慮と持続可能な製造プロセスの実現に向けた取り組みを紹介します。
+                            </p>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="news-card">
+                    <a href="#" class="news-card-link">
+                        <div class="news-card-image" style="background: url('K2A6396.jpg') center/cover;"></div>
+                        <div class="news-card-content">
+                            <div class="news-card-date">
+                                <span style="font-size: 14px; color: #0085b2; font-weight: 600;">2021.07.09</span>
+                            </div>
+                            <h3 class="news-card-title">動画撮影</h3>
+                            <p class="news-card-excerpt">
+                                当社の製造現場や技術力を紹介する動画コンテンツを制作しました。
+                            </p>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="news-card">
+                    <a href="#" class="news-card-link">
+                        <div class="news-card-image" style="background: url('K2A6405.jpg') center/cover;"></div>
+                        <div class="news-card-content">
+                            <div class="news-card-date">
+                                <span style="font-size: 14px; color: #0085b2; font-weight: 600;">2021.05.24</span>
+                            </div>
+                            <h3 class="news-card-title">ホームページをリニューアルしました</h3>
+                            <p class="news-card-excerpt">
+                                より使いやすく、わかりやすいウェブサイトへとリニューアルいたしました。
+                            </p>
+                        </div>
+                    </a>
+                </article>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="#" class="btn-more">お知らせ一覧を見る</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 従業員紹介セクション -->
+    <section class="section" id="member">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">MEMBER</h2>
+                <p class="section-subtitle">
+                    正直で真面目、地道な努力を積み重ねる。<br>
+                    プロ意識を持った従業員が、高品質を支えています。
+                </p>
+            </div>
+
+            <div class="member-grid">
+                <div class="member-card">
+                    <div class="member-card-image" style="background: url('K2A6528.jpg') center/cover;"></div>
+                    <div class="member-card-info">
+                        <div class="member-role">生産技術部</div>
+                        <div class="member-name">機械オペレーター</div>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="member-card-image" style="background: url('K2A6376.jpg') center/cover;"></div>
+                    <div class="member-card-info">
+                        <div class="member-role">品質管理部</div>
+                        <div class="member-name">検査担当</div>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="member-card-image" style="background: url('K2A6396.jpg') center/cover;"></div>
+                    <div class="member-card-info">
+                        <div class="member-role">開発部</div>
+                        <div class="member-name">サンプル製作</div>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="member-card-image" style="background: url('K2A6405.jpg') center/cover;"></div>
+                    <div class="member-card-info">
+                        <div class="member-role">営業部</div>
+                        <div class="member-name">顧客対応</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="#" class="btn-more">従業員紹介・採用情報</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTAセクション -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">お気軽にお問い合わせください</h2>
+            <p class="cta-text">糸・生地のご相談から、採用情報まで承ります</p>
+            <div class="cta-buttons">
+                <a href="tel:0761-57-1341" class="btn-white">📞 0761-57-1341</a>
+                <a href="#" class="btn-white">✉ お問い合わせフォーム</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-info">
+                <h3>株式会社アサヒゴウセン</h3>
+                <p>
+                    〒923-1101<br>
+                    石川県能美市 粟生町ツ−20<br>
+                    TEL: 0761-57-1341<br>
+                    FAX: 0761-58-6170
+                </p>
+            </div>
+
+            <div class="footer-nav">
+                <h4>事業内容</h4>
+                <ul>
+                    <li><a href="#">糸加工</a></li>
+                    <li><a href="#">ニット製造</a></li>
+                    <li><a href="#">展開分野</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-nav">
+                <h4>会社情報</h4>
+                <ul>
+                    <li><a href="#">会社案内</a></li>
+                    <li><a href="#">従業員紹介</a></li>
+                    <li><a href="#">採用情報</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-nav">
+                <h4>その他</h4>
+                <ul>
+                    <li><a href="#">お知らせ</a></li>
+                    <li><a href="#">お問い合わせ</a></li>
+                    <li><a href="#">プライバシーポリシー</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            Copyright © 2025 ASAHIGOUSEN All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- ワイヤーフレーム注釈 -->
+    <div class="wireframe-note">
+        📐 ワイヤーフレーム
+    </div>
+</body>
+</html>
