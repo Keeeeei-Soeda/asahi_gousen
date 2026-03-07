@@ -15,7 +15,15 @@ venv/
 .env
 .env.local
 
+# ZIPファイル
+*.zip
+
 # 一時ファイル
 *.tmp
 *.bak
 *.swp
+*.swo
+*~
+
+# imagesフォルダ（WordPressの画像ファイル）
+images/
