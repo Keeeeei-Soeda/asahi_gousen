@@ -1,0 +1,15 @@
+# 静的HTMLサイト用 .htaccess
+# public_html に配置し、既存の WordPress .htaccess を上書きする
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+# 実在するファイルはそのまま返す
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+# 実在するディレクトリで末尾スラッシュあり → index.html を探す
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_URI} !/$
+RewriteRule ^(.*)$ $1/ [R=301,L]
+# ディレクトリの index.html をデフォルトドキュメントとして
+DirectoryIndex index.html index.php
+</IfModule>

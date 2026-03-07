@@ -1,0 +1,21 @@
+# 秘密鍵・認証情報（絶対にコミットしない）
+*.key
+xb300407.key
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+venv/
+.venv/
+.env
+.env.local
+
+# 一時ファイル
+*.tmp
+*.bak
+*.swp

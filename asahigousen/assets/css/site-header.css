@@ -1,0 +1,291 @@
+/* ========== 横スクロール防止 ========== */
+html, body { overflow-x: hidden; }
+#outer-wrap, #wrap { overflow-x: hidden; max-width: 100%; }
+.elementor-section.elementor-section-full_width,
+.elementor-element { max-width: 100%; }
+/* カルーセルセクションはコンテナ内で収める */
+.elementor-widget-image-carousel .elementor-widget-container { overflow: hidden; }
+
+/**
+ * ヘッダー適正化スタイル
+ * フッター色（#2b499d）を使用、左に会社名・右にナビ
+ */
+#site-header {
+  background: #2b499d !important;
+  background-image: none !important;
+  padding: 0;
+  min-height: 56px;
+}
+#site-header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  min-height: 56px;
+}
+#site-logo {
+  flex-shrink: 0;
+}
+#site-logo .custom-logo-link {
+  display: block;
+  color: #fff !important;
+  text-decoration: none !important;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+#site-logo img {
+  display: none;
+}
+#site-logo .custom-logo-link::before {
+  content: "アサヒゴウセン";
+}
+#site-navigation-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+#site-navigation {
+  display: block;
+}
+#menu-nav {
+  display: flex !important;
+  flex-wrap: wrap;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0.5em 1.5em;
+  justify-content: flex-end;
+}
+#menu-nav li {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+#menu-nav li a,
+#menu-nav .menu-link {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+#menu-nav li a:hover,
+#menu-nav .menu-link:hover {
+  color: #afd8d8 !important;
+}
+.search-toggle-li {
+  display: none;
+}
+#searchform-dropdown {
+  display: none;
+}
+.oceanwp-mobile-menu-icon {
+  display: none;
+}
+#mobile-dropdown {
+  display: none;
+}
+
+/* ========== フッター適正化（一般的なフッターレイアウト） ========== */
+#footer {
+  margin-top: auto;
+}
+#footer-inner {
+  background: #2b499d;
+}
+/* フッター内クイックリンク（当社の強み・設備紹介・当社のものづくり・展開分野） */
+#footer-quick-links {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 20px 12px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+#footer-quick-links nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+}
+#footer-quick-links a {
+  color: #fff !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-size: 0.9375rem;
+}
+#footer-quick-links a:hover {
+  color: #afd8d8 !important;
+}
+/* 本文エリアの4リンクセクションを非表示（フッターへ移動したため） */
+[data-id="98d3c66"] {
+  display: none !important;
+}
+#footer-widgets {
+  padding: 10px 20px !important;
+  margin: 0 !important;
+  max-width: 1200px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+/* ロゴ画像・JQUALITYバナー等は非表示 */
+#media_image-2,
+#media_image-3,
+#footer-widgets .footer-box.col-2,
+#footer-widgets .footer-box.span_1_of_2:last-child {
+  display: none !important;
+}
+.footer-widgets-inner {
+  display: block !important;
+}
+#footer-widgets .footer-box {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  float: none !important;
+}
+#footer-widgets .widget_text,
+#footer-widgets .textwidget {
+  color: #fff !important;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+#footer-widgets .widget_text p,
+#footer-widgets .textwidget p {
+  margin: 0 !important;
+}
+#footer-widgets .widget_text a,
+#footer-widgets .textwidget a {
+  color: #fff !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+#footer-widgets .widget_text a:hover,
+#footer-widgets .textwidget a:hover {
+  color: #afd8d8 !important;
+}
+#footer-bottom {
+  background: #2b499d !important;
+  padding: 12px 20px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+#footer-bottom-inner {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  max-width: 1200px;
+  margin: 0 auto !important;
+}
+#footer-bottom-menu .menu {
+  display: flex !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 1rem;
+}
+#footer-bottom-menu .menu li {
+  margin: 0 !important;
+}
+#footer-bottom-menu a {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+#footer-bottom-menu a:hover {
+  color: #afd8d8 !important;
+}
+#copyright {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 0.8125rem;
+  margin: 0 !important;
+}
+
+/* ========== 画像カルーセル（Swiper）レイアウト修正 ========== */
+.elementor-image-carousel-wrapper.swiper {
+  overflow: hidden;
+  width: 100%;
+}
+.elementor-image-carousel-wrapper .swiper-wrapper {
+  display: flex;
+  align-items: stretch;
+}
+/* 5枚表示 → 各スライドを高さ固定・object-fit: cover で統一 */
+.elementor-image-carousel-wrapper .swiper-slide {
+  height: 200px;
+  overflow: hidden;
+}
+.elementor-image-carousel-wrapper .swiper-slide-inner {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.elementor-image-carousel-wrapper .swiper-slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* ナビゲーションボタン */
+.elementor-swiper-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.elementor-swiper-button-prev { left: 8px; }
+.elementor-swiper-button-next { right: 8px; }
+/* ページネーション */
+.swiper-pagination {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+}
+.swiper-pagination-bullet {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  margin: 0 3px;
+  cursor: pointer;
+}
+.swiper-pagination-bullet-active {
+  background: #fff;
+}
+
+/* ========== フル幅ヒーロー画像（工場・編み機）の適正表示 ========== */
+/* 画像右側の余白をカットし、左側の写真部分を適正サイズで表示 */
+[data-id="d154bc9"] .elementor-widget-image .elementor-widget-container,
+[data-id="66f403e"] .elementor-widget-container {
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+[data-id="d154bc9"] .elementor-widget-image img,
+[data-id="66f403e"] img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+  display: block;
+}
+
+/* ========== 記事ページのサムネイル画像を画面幅に収める ========== */
+.single .thumbnail img,
+article .thumbnail img.wp-post-image {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+}
